@@ -414,7 +414,6 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
                 .getBoolean(generateUniqId(mTargetView), false);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     public void hide() {
 
         LogUtils.debug("hide");
