@@ -1,9 +1,7 @@
 package com.ghx.guideviewdemo.weiget;
 
 import com.ghx.guideviewdemo.utils.LogUtils;
-
 import android.graphics.PorterDuffXfermode;
-import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.graphics.PorterDuff;
@@ -11,7 +9,6 @@ import android.widget.FrameLayout;
 import android.util.AttributeSet;
 import com.ghx.guideviewdemo.R;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
@@ -131,7 +128,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     }
 
     private void init() {
-        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);//操了个蛋，这句话不加图形叠加模式竟然不行！bug!!!!!
     }
 
 
