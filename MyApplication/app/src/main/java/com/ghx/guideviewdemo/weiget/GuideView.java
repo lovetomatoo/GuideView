@@ -3,6 +3,7 @@ package com.ghx.guideviewdemo.weiget;
 import com.ghx.guideviewdemo.utils.LogUtils;
 
 import android.graphics.PorterDuffXfermode;
+import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.graphics.PorterDuff;
@@ -75,16 +76,6 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     private int mOffsetY;
 
     /**
-     * 前景 Bitmap
-     */
-    private Bitmap mBitmap;
-
-    /**
-     * Canvas 画布
-     */
-    private Canvas mTemp;
-
-    /**
      * 背景颜色， 由提供的方法设置进来
      */
     private int mBgColor;
@@ -154,9 +145,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         mIsMeasured = false;
         mCenter = null;
         mPorterDuffXfermode = null;
-        mBitmap = null;
         mNeedDraw = true;
-        mTemp = null;
     }
 
     @Override
@@ -182,13 +171,6 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         LogUtils.debug("drawBackground");
         mNeedDraw = false;
 
-        // 先绘制bitmap，再将bitmap绘制到屏幕
-//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.RGB_565);
-//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_4444);
-//        mTemp = new Canvas(mBitmap);
-        mTemp = canvas;
-
 //        int byteCount = mBitmap.getByteCount();
 //        Log.d("kankan", byteCount / 1024 / 1024 + "");
 
@@ -197,7 +179,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         //设置背景画笔的颜色
         bgPaint.setColor(mBgColor == 0 ? getResources().getColor(R.color.guide_shadow) : mBgColor);
         //画屏幕背景 Rect
-        mTemp.drawRect(0, 0, mTemp.getWidth(), mTemp.getHeight(), bgPaint);
+        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), bgPaint);
 
         // mTargetView 的透明圆形画笔
         if (mCirclePaint == null) {
@@ -210,13 +192,13 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         mCirclePaint.setXfermode(mPorterDuffXfermode);
 
         if (mShape == null) {//如果使用者没setShape，则默认为圆形
-            mTemp.drawCircle(mCenter[0], mCenter[1], mRadius, mCirclePaint);//绘制圆形
+            canvas.drawCircle(mCenter[0], mCenter[1], mRadius, mCirclePaint);//绘制圆形
         } else {
 
             switch (mShape) {
                 case CIRCULAR://圆
 
-                    mTemp.drawCircle(mCenter[0], mCenter[1], mRadius, mCirclePaint);//绘制圆
+                    canvas.drawCircle(mCenter[0], mCenter[1], mRadius, mCirclePaint);//绘制圆
 
                     break;
                 case ELLIPSE://椭圆
@@ -236,7 +218,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
                         rectF.right = mCenter[0] + mTargetView.getWidth() / 2 + mOvalParameter[2];
                         rectF.bottom = mCenter[1] + mTargetView.getHeight() / 2 + mOvalParameter[3];
                     }
-                    mTemp.drawOval(rectF, mCirclePaint);//绘制椭圆
+                    canvas.drawOval(rectF, mCirclePaint);//绘制椭圆
 
                     break;
                 case RECTANGULAR://矩形，支持倒角
@@ -257,7 +239,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
                         radios[0] = mRoundRecTParameter[0];
                         radios[1] = mRoundRecTParameter[1];
                     }
-                    mTemp.drawRoundRect(rectF2, radios[0], radios[1], mCirclePaint);//绘制圆角矩形
+                    canvas.drawRoundRect(rectF2, radios[0], radios[1], mCirclePaint);//绘制圆角矩形
 
                     break;
             }
