@@ -15,6 +15,11 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.SecondActivity"
+                  android:screenOrientation="landscape">
+        </activity>>
+
     </application>
 
 </manifest>

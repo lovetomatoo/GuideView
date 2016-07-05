@@ -1,8 +1,10 @@
 package com.ghx.guideviewdemo.activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,7 +15,7 @@ import android.widget.Toast;
 import com.ghx.guideviewdemo.R;
 import com.ghx.guideviewdemo.weiget.GuideView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView mTvMain;
     private Button mBtnMain;
@@ -35,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         mTvMain = (TextView) findViewById(R.id.tv_main);
         mBtnMain = (Button) findViewById(R.id.btn_main);
         mIvMain = (ImageView) findViewById(R.id.iv_main);
+        Button mBtnNextPage = (Button) findViewById(R.id.btn_nextpage);
+        mBtnNextPage.setOnClickListener(this);
     }
 
 
@@ -104,4 +108,14 @@ public class MainActivity extends AppCompatActivity {
         mTvGuideView.show();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+                    case R.id.btn_nextpage:
+                        Intent intent = new Intent(this, SecondActivity.class);
+                        startActivity(intent);
+                        
+                        break;
+                }
+    }
 }

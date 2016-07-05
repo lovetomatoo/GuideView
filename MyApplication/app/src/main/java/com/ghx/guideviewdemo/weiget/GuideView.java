@@ -1,8 +1,8 @@
 package com.ghx.guideviewdemo.weiget;
 
 import com.ghx.guideviewdemo.utils.LogUtils;
+
 import android.graphics.PorterDuffXfermode;
-import android.annotation.TargetApi;
 import android.view.ViewTreeObserver;
 import android.widget.RelativeLayout;
 import android.graphics.PorterDuff;
@@ -17,7 +17,6 @@ import android.graphics.RectF;
 import android.app.Activity;
 import android.view.Gravity;
 import android.view.View;
-import android.os.Build;
 
 
 /**
@@ -107,7 +106,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     private int[] mOvalParameter;
 
     /**
-     * 画矩形圆角的参数，由提供的方法设置进来。 4 个数，以此为 L, T, R, B
+     * 画矩形圆角的参数，由提供的方法设置进来。 2 个数，X, Y 轴圆角的半径
      * 默认为无倒角
      */
     private int[] mRoundRecTParameter;
@@ -141,6 +140,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     }
 
     private void init() {
+        setLayerType(View.LAYER_TYPE_SOFTWARE, null);
     }
 
 
@@ -163,6 +163,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
     protected void onDraw(Canvas canvas) {
 
         super.onDraw(canvas);
+        canvas.isHardwareAccelerated();
         LogUtils.debug("onDraw");
 
         if (!mIsMeasured) {
@@ -182,8 +183,14 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         mNeedDraw = false;
 
         // 先绘制bitmap，再将bitmap绘制到屏幕
-        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
-        mTemp = new Canvas(mBitmap);
+//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_8888);
+//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.RGB_565);
+//        mBitmap = Bitmap.createBitmap(canvas.getWidth(), canvas.getHeight(), Bitmap.Config.ARGB_4444);
+//        mTemp = new Canvas(mBitmap);
+        mTemp = canvas;
+
+//        int byteCount = mBitmap.getByteCount();
+//        Log.d("kankan", byteCount / 1024 / 1024 + "");
 
         //背景画笔
         Paint bgPaint = new Paint();
@@ -199,7 +206,7 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
         }
 
         //SRC_OUT也可以
-        mPorterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
+        mPorterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);//SRC_OVER
         mCirclePaint.setXfermode(mPorterDuffXfermode);
 
         if (mShape == null) {//如果使用者没setShape，则默认为圆形
@@ -255,10 +262,9 @@ public class GuideView extends RelativeLayout implements ViewTreeObserver.OnGlob
                     break;
             }
         }
-
         // 绘制到屏幕
-        canvas.drawBitmap(mBitmap, 0, 0, bgPaint);
-        mBitmap.recycle();
+//        canvas.drawBitmap(mBitmap, 0, 0, bgPaint);
+//        mBitmap.recycle();
     }
 
     /**

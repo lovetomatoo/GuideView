@@ -30,4 +30,12 @@
         android:src="@mipmap/ic_launcher"
         android:layout_height="wrap_content"/>
 
+
+    <Button
+        android:layout_width="match_parent"
+        android:text="下一页"
+        android:id="@+id/btn_nextpage"
+        android:layout_height="wrap_content"/>
+
+
 </LinearLayout>
